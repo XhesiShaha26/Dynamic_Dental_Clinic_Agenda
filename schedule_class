@@ -1,0 +1,37 @@
+class Schedule {
+private:
+    std::vector<Appointment> appointments;
+
+public:
+    bool addAppointment(const Appointment& newAppointment) {
+        for (const auto& existing : appointments) {
+            if (newAppointment.conflictsWith(existing)) {
+                return false; // Conflict detected
+            }
+        }
+        appointments.push_back(newAppointment);
+        return true;
+    }
+
+    bool deleteAppointment(const std::string& patientName, const std::tm& startTime) {
+        auto it = appointments.begin();
+        while (it != appointments.end()) {
+            if (it->getPatientName() == patientName && std::mktime(&(it->getStartTime())) == std::mktime(&startTime)) {
+                appointments.erase(it);
+                return true;
+            }
+            ++it;
+        }
+        return false;
+    }
+
+    void printSchedule() const {
+        if (appointments.empty()) {
+            std::cout << "No appointments scheduled." << std::endl;
+            return;
+        }
+        for (const auto& appointment : appointments) {
+            appointment.print();
+        }
+    }
+};
