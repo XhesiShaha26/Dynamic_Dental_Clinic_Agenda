@@ -1,0 +1,37 @@
+#include <iomanip>
+
+int main() {
+    Schedule schedule;
+    bool running = true;
+    while (running) {
+        std::cout << "1. Add Appointment\n2. Delete Appointment\n3. Show All Appointments\n4. Exit\nEnter your choice: ";
+        int choice;
+        std::cin >> choice;
+        if (choice == 1) {
+            // Assume valid input for simplicity
+            std::string name, type, desc;
+            std::tm start{}, end{};
+            std::cout << "Enter patient name, appointment type, description: ";
+            std::cin >> name >> type >> desc;
+            std::cout << "Enter start time (yyyy mm dd hh mm): ";
+            std::cin >> start.tm_year >> start.tm_mon >> start.tm_mday >> start.tm_hour >> start.tm_min;
+            start.tm_year -= 1900; start.tm_mon -= 1;  // Adjust years and months
+            std::cout << "Enter end time (yyyy mm dd hh mm): ";
+            std::cin >> end.tm_year >> end.tm_mon >> end.tm_mday >> end.tm_hour >> end.tm_min;
+            end.tm_year -= 1900; end.tm_mon -= 1;  // Adjust years and months
+            Appointment newAppointment(name, type, desc, start, end);
+            if (schedule.addAppointment(newAppointment)) {
+                std::cout << "Appointment added successfully." << std::endl;
+            } else {
+                std::cout << "Failed to add appointment: Time conflict." << std::endl;
+            }
+        } else if (choice == 2) {
+            // Similar input mechanism for deletion
+        } else if (choice == 3) {
+            schedule.printSchedule();
+        } else if (choice == 4) {
+            running = false;
+        }
+    }
+    return 0;
+}
