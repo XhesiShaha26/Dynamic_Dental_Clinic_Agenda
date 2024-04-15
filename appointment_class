@@ -1,0 +1,19 @@
+#include <string>
+#include <ctime>
+
+class Appointment {
+private:
+    std::string patientName;
+    std::tm startTime;
+    std::tm endTime;
+
+public:
+    Appointment(const std::string& name, std::tm start, std::tm end)
+    : patientName(name), startTime(start), endTime(end) {}
+
+    bool conflictsWith(const Appointment& other) const {
+        return (std::mktime(&startTime) < std::mktime(&other.endTime) &&
+                std::mktime(&endTime) > std::mktime(&other.startTime));
+    }
+
+};
